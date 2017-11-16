@@ -1,1 +1,1 @@
-web: gunicorn QuickExamBuilder.wsgi
+web: gunicorn gettingstarted.wsgi --log-file -
