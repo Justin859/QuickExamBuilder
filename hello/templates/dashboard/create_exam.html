@@ -1,0 +1,126 @@
+{% extends 'dashboard.html' %}
+{% load features %}
+
+{% block content %}
+
+<h3 class="display-4">Exams</h3>
+<hr>
+{% if form.errors %}
+    {{form.errors}}
+{% endif %}
+
+<div class="row">
+    <div class="col-3">
+        <a href="/dashboard/exams/" class="btn btn-block btn-success">Exams</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/exams/create" class="btn btn-block btn-info">Create New Exam</a>
+    </div>
+</div>
+
+<form action="" method="POST" id="create-new-exam">
+    {% csrf_token %}
+    <h3>1. Enter exam information</h3>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label id="id_{{form.exam_name.name}}">{{form.exam_name.label}}</label>
+                <input name="{{form.exam_name.name}}" maxlength="255" id="id_{{form.exam_name.name}}" class="form-control" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label id="id_{{form.duration.name}}">{{form.duration.label}}</label>
+                <input name="{{form.duration.name}}" maxlength="255" id="duration-picker" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label id="id_{{form.availability.name}}">{{form.availability.label}}</label>
+                <select name="{{form.availability.name}}" maxlength="255" id="id_{{form.availability.name}}" class="form-control" type="text">
+                    <option value="AlwaysAvailable">Always available</option>
+                    <option value="AvailableOnSpecificTime">Available on specific time</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label id="id_{{form.question_picking.name}}">{{form.question_picking.label}}</label>
+                <select name="{{form.question_picking.name}}" id="id_{{form.question_picking.name}}" class="form-control">
+                    <option value="AutoPick">Auto Pick (different questions for all candidates)</option>
+                    <option value="AutoPickDiff">Auto Pick (same questions for all candidates)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label id="id_{{form.start_date.name}}">{{form.start_date.label}}</label>
+                <input type="date" id="id_{{form.start_date.name}}" name="{{form.start_date.name}}" class="form-control">
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label id="id_{{form.start_time.name}}">{{form.start_time.label}}</label>
+                <input type="time" id="id_{{form.start_time.name}}" name="{{form.start_time.name}}" class="form-control" value="12:30">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label id="id_{{form.end_date.name}}">{{form.end_date.name}}</label>
+                    <input type="date" id="id_{{form.end_date.name}}" name="{{form.end_date.name}}" class="form-control">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label id="id_{{form.end_time.name}}">{{form.end_time.name}}</label>
+                    <input type="time" class="form-control" name="{{form.end_time.name}}" value="12:30">
+                </div>
+            </div>
+        </div>
+    <h3>2. Specify Candidates</h3>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_{{form.candidates.name}}">{{form.candidates.label}}</label>
+                <select name="{{form.candidates.name}}" id="candidate-select" class="form-control" multiple>
+                    <option value="Select">Select</option>
+                    <option value="Default">Default</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <h3>3. Specify Questions</h3>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_{{form.from_section.name}}">{{form.from_section.label}}</label>
+                <select name="{{form.from_section.name}}" multiple="multiple" class="form-control" id="my-select">
+                    <option value="Select">Select</option>
+                    <option value="Default">Default</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_{{form.number_of_questions.name}}">{{form.number_of_questions.label}}</label>
+                <input name="{{form.number_of_questions.name}}" id="id_{{form.number_of_questions.name}}" class="form-control" max="327" min="1" type="number">
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-4 offset-md-8">
+            <div class="form-group">
+                <input class="form-control btn btn-primary" value="submit" type="submit">
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

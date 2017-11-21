@@ -1,0 +1,49 @@
+{% extends 'dashboard.html' %}
+{% load features %}
+
+{% block content %}
+
+<h3 class="display-4">Exams</h3>
+<hr>
+
+<div class="row">
+    <div class="col-3">
+        <a href="/dashboard/exams/" class="btn btn-block btn-success">Exams</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/exams/create" class="btn btn-block btn-info">Create New Exam</a>
+    </div>
+</div>
+
+<br />
+
+<div class="row" id="exam-table">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <th>#</th>
+                <th>Exam Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Duration</th>
+                <th>Details</th>
+                <th>Change</th>
+            </thead>
+            <tbody>
+                {% for exam in admin_exams %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{exam.exam_name}}</td>
+                        <td>{{exam.start_date}}</td>
+                        <td>{{exam.end_date}}</td>
+                        <td>{{exam.duration | duration_filter}}</td>
+                        <td><a href="#">view</a></td>
+                        <td><a href="#">edit</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

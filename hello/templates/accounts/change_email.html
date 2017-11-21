@@ -1,0 +1,52 @@
+{% extends 'account_base.html' %}
+{% load static %}
+{% load book_feature %}
+{% block content %}
+
+<div class="col-12 col-lg-9">
+
+    <div class="container" style="padding: 0;">
+        <div class="row">
+            <div class="col-12">
+                <h2>Change email address - <small class="text-muted">{{request.user.get_full_name}}</small></h2>
+                <hr>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-md-center">
+            <div class="col-12 col-lg-8">
+                <form name="signupForm" method="post" action="">
+                    {% csrf_token %}
+                    {% if form.username.errors %}
+                    <div class="form-group" ng-class="{'has-danger': signupForm.username.$invalid || username == '{{form.username.value}}', 'has-success': signupForm.username.$valid}">
+                        <label for="{{form.username.name}}">{{form.username.label}}</label>
+                        <input type='text' class="form-control" name="username"
+                        ng-model="username" aria-describedby="emailHelp"
+                        ng-init="username='{{form.username.value | empty}}'"
+                        ng-class="{'form-control-danger': signupForm.username.$invalid || username == '{{form.username.value}}', 'form-control-success': signupForm.username.$valid}" 
+                        placeholder="Enter email" required email-directive>
+                    <div ng-show="username == '{{form.username.value}}'" class="form-control-feedback text-danger"><small>{{form.username.errors.0}}</small></div>
+                    <div ng-show="signupForm.username.$invalid && !signupForm.username.$pristine" class="form-control-feedback"><small>Please enter a valid email address</small></div>
+                    </div>
+                    {% else %}
+                    <div class="form-group" ng-class="{'has-warning': signupForm.username.$invalid && !signupForm.username.$pristine, 'has-success': signupForm.username.$valid}">
+                        <label for="{{form.username.name}}">{{form.username.label}}</label>
+                        <input type='text' class="form-control" name="username"
+                        ng-model="username" aria-describedby="emailHelp" 
+                        ng-init="username='{{request.user}}'"
+                        ng-class="{'form-control-warning': signupForm.username.$invalid && !signupForm.username.$pristine, 'form-control-success': signupForm.username.$valid}" 
+                        placeholder="Enter email" required email-directive>
+                    <div ng-show="signupForm.username.$invalid && !signupForm.username.$pristine" class="form-control-feedback"><small>Please enter a valid email address</small></div>
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <input class="form-control btn btn-success" type="submit" value="change email address" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

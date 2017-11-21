@@ -1,0 +1,64 @@
+{% extends 'dashboard.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h3 class="display-4">Candidates</h3>
+<hr>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" class="form-control" name="firstname" required>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="lastname" required>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label>Password</label>
+                <input type="text" class="form-control" name="password" required>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label>Candidate Group</label>
+                <select class="form-control" name="candidate_group" required>
+                    <option>Select</option>
+                    <option>Default</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 offset-md-8">
+            <div class="form-group">
+                <input type="submit" class="form-control btn btn-primary" value="Add User">
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

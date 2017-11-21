@@ -1,0 +1,77 @@
+{% extends 'account_base.html' %}
+{% load static %}
+{% load book_feature %}
+{% block content %}
+
+<div class="col-12 col-lg-9">
+
+    <div class="container" style="padding: 0;">
+        <div class="row">
+            <div class="col-12">
+                <h2>Edit Account Details - <small class="text-muted">{{request.user.get_full_name}}</small></h2>
+                <hr>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-md-center">
+            <div class="col-12 col-lg-8">
+                <form name="signupForm" method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{form.username.name}}">Email address</label>
+                        <input type='text' class="form-control" value="{{request.user.username}}" disabled><a href="/accounts/change_email/">change</a>
+                    </div>
+
+                    {% if form.firstname.errors %}
+                    <div class="form-group" ng-class="{'has-danger': signupForm.firstname.$invalid || firstname == '{{form.firstname.value}}', 'has-success': signupForm.firstname.$valid}">
+                        <label for="{{form.firstname.name}}">{{form.firstname.label}}</label>
+                        <input type='text' class="form-control" name="firstname"
+                        ng-model="firstname" aria-describedby="emailHelp"
+                        ng-init="firstname='{{form.firstname.value | empty}}'"
+                        ng-class="{'form-control-danger': signupForm.firstname.$invalid || firstname == '{{form.firstname.value}}', 'form-control-success': signupForm.firstname.$valid}" 
+                        placeholder="first name" required length-directive>
+                    <div ng-show="signupForm.firstname.$invalid || firstname == '{{form.firstname.value}}'" class="form-control-feedback text-danger"><small>First name can't be a single letter</small></div>
+                    </div>
+                    {% else %}
+                    <div class="form-group" ng-class="{'has-warning': signupForm.firstname.$invalid && !signupForm.firstname.$pristine, 'has-success': signupForm.firstname.$valid}">
+                        <label for="{{form.firstname.name}}">{{form.firstname.label}}</label>
+                        <input type='text' class="form-control" name="firstname"
+                        ng-model="firstname" aria-describedby="emailHelp" 
+                        ng-init="firstname='{{request.user.first_name}}'"
+                        ng-class="{'form-control-warning': signupForm.firstname.$invalid && !signupForm.firstname.$pristine, 'form-control-success': signupForm.firstname.$valid}" 
+                        placeholder="first name" required length-directive>
+                    <div ng-show="signupForm.firstname.$invalid && !signupForm.firstname.$pristine" class="form-control-feedback"><small>First name can't be a single letter</small></div>
+                    </div>
+                    {% endif %}
+                    {% if form.lastname.errors %}
+                    <div class="form-group" ng-class="{'has-danger': signupForm.lastname.$invalid || lastname == '{{form.lastname.value}}', 'has-success': signupForm.lastname.$valid}">
+                        <label for="{{form.lastname.name}}">{{form.lastname.label}}</label>
+                        <input type='text' class="form-control" name="lastname"
+                        ng-model="lastname"
+                        ng-init="lastname='{{form.lastname.value | empty}}'"
+                        ng-class="{'form-control-danger': signupForm.lastname.$invalid || lastname == '{{form.lastname.value}}', 'form-control-success': signupForm.lastname.$valid}" 
+                        placeholder="last name" required length-directive>
+                    <div ng-show="signupForm.lastname.$invalid || lastname == '{{form.lastname.value}}'" class="form-control-feedback text-danger"><small>Last name can't be a single letter</small></div>
+                    </div>
+                    {% else %}
+                    <div class="form-group" ng-class="{'has-warning': signupForm.lastname.$invalid && !signupForm.lastname.$pristine, 'has-success': signupForm.lastname.$valid}">
+                        <label for="{{form.lastname.name}}">{{form.lastname.label}}</label>
+                        <input type='text' class="form-control" name="lastname"
+                        ng-model="lastname"
+                        ng-init="lastname='{{request.user.last_name}}'"
+                        ng-class="{'form-control-warning': signupForm.lastname.$invalid && !signupForm.lastname.$pristine, 'form-control-success': signupForm.lastname.$valid}" 
+                        placeholder="last name" required length-directive>
+                    <div ng-show="signupForm.lastname.$invalid && !signupForm.lastname.$pristine" class="form-control-feedback"><small>Last name can't be a single letter</small></div>
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <input class="form-control btn btn-success" type="submit" value="save changes" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

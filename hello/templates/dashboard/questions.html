@@ -1,0 +1,91 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<h3 class="display-4">Questions Bank</h3>
+<hr>
+{% if form.errors %}
+    <p>{{form.errors.as_json}}</p>
+{% endif %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_{{form.question_type.name}}">{{form.question_type.label}}</label>
+                <select class="form-control" id="id_{{form.question_type.name}}" name="{{form.question_type.name}}">
+                    <option value="">Select</option>
+                    <option value="MultipleChoice">Multiple Choice</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_{{form.section.name}}">{{form.section.label}}</label>
+                <select class="form-control" name="{{form.section.name}}" id="id_{{form.section.name}}">
+                    <option value="">Select</option>
+                    <option value="Default">Default</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="from-group">
+                <label for="id_{{form.question_text.name}}">{{form.question_text.label}}</label>
+                <textarea name="{{form.question_text.name}}" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label for="id_{{form.answer_field_1.name}}">{{form.answer_field_1.label}}</label>
+            <input name="{{form.answer_field_1.name}}" class="form-control" id="id_{{form.answer_field_1.name}}" maxlength="255" type="text">
+        </div>
+        <div class="col-6">
+            <label for="id_{{form.answer_field_2.name}}">{{form.answer_field_2.label}}</label>
+            <input name="{{form.answer_field_2.name}}" class="form-control" id="id_{{form.answer_field_2.name}}" maxlength="255" type="text">
+        </div>
+        <div class="col-6">
+            <label for="id_{{form.answer_field_3.name}}">{{form.answer_field_3.label}}</label>
+            <input name="{{form.answer_field_3.name}}" class="form-control" id="id_{{form.answer_field_3.name}}" maxlength="255" type="text">
+        </div>
+        <div class="col-6">
+            <label for="id_{{form.answer_field_4.name}}">{{form.answer_field_4.label}}</label>
+            <input name="{{form.answer_field_4.name}}" class="form-control" id="id_{{form.answer_field_4.name}}" maxlength="255" type="text">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_{{form.correct_answer.name}}">{{form.correct_answer.label}}</label>
+                <select name="{{form.correct_answer.name}}" class="form-control" id="id_{{form.correct_answer.name}}">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="id_{{form.marks.name}}">{{form.marks.label}}</label>
+                <input name="{{form.marks.name}}" class="form-control" id="id_{{form.marks.name}}" min="0" max="327" type="number">
+            </div>
+        </div>
+    </div>
+
+
+    <br />
+    <div class="row">
+        <div class="col-4 offset-md-8">
+            <div class="form-group">
+                <input type="submit" class="form-control btn btn-primary" value="Submit" />
+            </div>
+        </div>
+    </div>
+
+    
+</form>
+
+{% endblock %}
