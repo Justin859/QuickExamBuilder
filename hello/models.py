@@ -41,15 +41,30 @@ class Exam(models.Model):
     start_time = models.CharField(max_length=255)
     end_date = models.CharField(max_length=255)
     end_time = models.CharField(max_length=255)
-    candidates = models.CharField(max_length=255)
-    number_of_questions = models.IntegerField()
 
     def __str__(self):
         return self.exam_name
 
     class Meta:
         verbose_name = 'Exam'
-        verbose_name_plural = 'Exams'    
+        verbose_name_plural = 'Exams'
+
+class ExamCandidateGroups(models.Model):
+    user_id = models.CharField(max_length=255)
+    exam_id = models.CharField(max_length=255)
+    group_section = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.exam_id
+
+class ExamQuestionSections(models.Model):
+    user_id = models.CharField(max_length=255)
+    exam_id = models.CharField(max_length=255)
+    question_section = models.CharField(max_length=255)
+    number_of_questions = models.PositiveSmallIntegerField(default=1)
+
+    def __str__(self):
+        return self.exam_id
 
 class Candidates(models.Model):
     admin_id = models.CharField(max_length=255)
@@ -66,15 +81,13 @@ class Candidates(models.Model):
         verbose_name = "Candidate"
         verbose_name_plural = "Candidates"
 
-class ExamQuestions(models.Model):
-    exam_id = models.CharField(max_length=255)
-    question_section = models.CharField(max_length=255)
+class CandidateGroup(models.Model):
     user_id = models.CharField(max_length=255)
-    question_id = models.CharField(max_length=255)
+    group_name = models.CharField(max_length=255)
+    candidate_count = models.PositiveSmallIntegerField(default=0)
 
-    def __str__(self):
-        return self.question_id
-    
-    class Meta:
-        verbose_name = 'Exam Question'
-        verbose_name_plural = 'Exam Questions'
+class QuestionSection(models.Model):
+    user_id = models.CharField(max_length=255)
+    section_name = models.CharField(max_length=255)
+    question_count = models.PositiveSmallIntegerField(default=0)
+

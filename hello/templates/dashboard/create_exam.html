@@ -38,7 +38,7 @@
         </div>
         <div class="col-4">
             <div class="form-group">
-                <label id="id_{{form.availability.name}}">{{form.availability.label}}</label>
+                <label>{{form.availability.label}}</label>
                 <select name="{{form.availability.name}}" maxlength="255" id="id_{{form.availability.name}}" class="form-control" type="text">
                     <option value="AlwaysAvailable">Always available</option>
                     <option value="AvailableOnSpecificTime">Available on specific time</option>
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row availability-field">
         <div class="col-4">
             <div class="form-group">
                 <label id="id_{{form.start_date.name}}">{{form.start_date.label}}</label>
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row availability-field">
             <div class="col-4">
                 <div class="form-group">
                     <label id="id_{{form.end_date.name}}">{{form.end_date.name}}</label>
@@ -89,28 +89,39 @@
             <div class="form-group">
                 <label for="id_{{form.candidates.name}}">{{form.candidates.label}}</label>
                 <select name="{{form.candidates.name}}" id="candidate-select" class="form-control" multiple>
-                    <option value="Select">Select</option>
-                    <option value="Default">Default</option>
+                    {% for group in candidate_groups %}
+                    <option value="{{group.group_name}}">{{group.group_name}} ({{group.candidate_count}})</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
     </div>
     <h3>3. Specify Questions</h3>
-    <div class="row">
-        <div class="col-6">
+    <div class="row question-multiple">
+        <div class="col-5">
             <div class="form-group">
                 <label for="id_{{form.from_section.name}}">{{form.from_section.label}}</label>
-                <select name="{{form.from_section.name}}" multiple="multiple" class="form-control" id="my-select">
+                <select name="{{form.from_section.name}}" class="form-control" id="id_{{form.from_section.name}}">
                     <option value="Select">Select</option>
-                    <option value="Default">Default</option>
+                    {% for section in question_sections %}
+                    <option value="{{section.section_name}}">{{section.section_name}} ({{section.question_count}})</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-5">
             <div class="form-group">
                 <label for="id_{{form.number_of_questions.name}}">{{form.number_of_questions.label}}</label>
                 <input name="{{form.number_of_questions.name}}" id="id_{{form.number_of_questions.name}}" class="form-control" max="327" min="1" type="number">
             </div>
+        </div>
+    </div>
+    <div class="row added-questions">
+
+    </div>
+    <div class="row">
+        <div class="col-4 offset-md-8">
+            <button type="button" class="btn btn-primary" id="add-question">Add Question</button>
         </div>
     </div>
     <hr>

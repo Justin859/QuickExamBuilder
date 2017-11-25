@@ -1,0 +1,40 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<h3 class="display-4">Questions Bank</h3>
+<hr>
+
+<div class="row">
+    <div class="col-3">
+        <a href="/dashboard/question-bank/" class="btn btn-block btn-success">Question Bank</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/question-bank/create" class="btn btn-block btn-info">Create New Question</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/question-bank/add-section/" class="btn btn-block btn-warning">Add New Section</a>
+    </div>
+</div>
+
+<br />
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="id_{{form.section_name.name}}">{{form.section_name.label}}</label>
+                    <input id="id_{{form.section_name.name}}" class="form-control" name="{{form.section_name.name}}"type="text" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <input type="submit" class="form-control btn btn-primary" value="Create Section">
+                </div>
+            </div>
+        </div>
+        
+    </form>
+
+{% endblock %}
