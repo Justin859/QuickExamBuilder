@@ -37,6 +37,14 @@ class AddCandidate(forms.Form):
     password = forms.CharField(label="Password", required=True, max_length=255)
     candidate_group = forms.CharField(label="Candidate group", required=True, max_length=255) 
 
+class EditCandidate(forms.Form):
+    firstname = forms.CharField(label="First name", required=True, max_length=255)
+    lastname = forms.CharField(label="Last name", required=True, max_length=255)
+    email = forms.EmailField(label="Email address", required=True, max_length=255)
+    password = forms.CharField(label="Password", required=False, max_length=255)
+    candidate_group = forms.CharField(label="Candidate group", required=True, max_length=255) 
+
+
 class QuestionSectionForm(forms.Form):
     section_name = forms.CharField(label="Name for new question section", max_length=255)
 

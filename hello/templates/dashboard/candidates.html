@@ -39,8 +39,8 @@
                         <td>{{candidate.first_name}} {{candidate.last_name}}</td>
                         <td>{{candidate.candidate_group}}</td>
                         <td>{{candidate.user_email}}</td>
-                        <td><a href="#">view</a></td>
-                        <td><a href="#">edit</a></td>
+                        <td><a href="/dashboard/candidates/{{candidate.user_id}}/detail/">view</a></td>
+                        <td><a href="/dashboard/candidates/{{candidate.user_id}}/edit/">edit</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

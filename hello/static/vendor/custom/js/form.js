@@ -32,6 +32,9 @@ $(document).ready(function() {
         console.log($('#id_availability').val())
     })
 
+    // Fix for FireFox issue.
+    document.forms['EditForm'].reset();
+
 });
 
 function deleteQuestion(question_id) {

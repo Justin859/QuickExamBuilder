@@ -1,0 +1,63 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+
+<h3 class="display-4">Candidates</h3>
+<hr>
+
+<div class="row">
+    <div class="col-3">
+        <a href="/dashboard/candidates/" class="btn btn-block btn-success">Candidate List</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/candidates/create" class="btn btn-block btn-info">Create New Candidate</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/candidates/add-group/" class="btn btn-block btn-warning">Add New Group</a>
+    </div>    
+</div>
+
+<br />
+
+<div class="container" style="padding: 0;">
+    <div class="row">
+        <div class="col-12">
+            <h2>Candidate Details - <small class="text-muted">{{candidate.first_name}} {{candidate.last_name}}</small></h2>
+            <hr>
+        </div>
+    </div>
+    <h3 class="text-muted">Candidate Info</h3>
+    <table class="hidden-sm-down table table-hover">
+        <tbody>
+            <tr>
+                <th scope="row" style="border-top: 0px;">email : </th>
+                <td style="border-top: 0px;">{{candidate.user_email}}</td>
+            </tr>   
+            <tr>
+                <th scope="row">first name : </th>
+                <td>{{candidate.first_name}}</td>
+            </tr>
+            <tr>
+                <th scope="row">last name : </th>
+                <td>{{candidate.last_name}}</td>
+            </tr>
+            <tr>
+                <th scope="row">candidate group : </th>
+                <td>{{candidate.candidate_group}}</td>
+            </tr>    
+        </tbody>
+    </table>
+    <div class="hidden-md-up">
+        <label><b>email : </b></label> {{candidate.user_email}}<br><hr>
+        <label><b>first name : </b></label> {{candidate.first_name}}<br><hr>
+        <label><b>last name : </b></label> {{candidate.last_name}}<br><hr>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-4 offset-md-8">
+            <a href="/accounts/edit_details" type="button" class="btn btn-secondary">Edit Details</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

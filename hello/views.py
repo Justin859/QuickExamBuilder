@@ -277,6 +277,67 @@ def add_section(request):
     else:
         return redirect('/login/')
 
+@login_required(login_url='/login/', redirect_field_name='/login/')
+def view_candidate(request, candidate_id):
+    # user filter when implimenting user to multiple groups 
+    if user_is_admin(request.user):
+        try:
+            candidate = Candidates.objects.get(admin_id = request.user.id, user_id = candidate_id)
+            return render(request, 'dashboard/candidate_view.html', {'candidate': candidate})
+        except:
+            # create better template view.
+            return HttpResponse('user not found in your candidates.')
+
+    else:
+        return redirect('/login/')
+
+@login_required(login_url='/login/', redirect_field_name='/login/')
+def edit_candidate(request, candidate_id):
+    # user filter when implimenting user to multiple groups 
+    if user_is_admin(request.user):
+
+        candidate = Candidates.objects.get(admin_id = request.user.id, user_id = candidate_id)
+        candidate_groups = CandidateGroup.objects.filter(user_id = request.user.id)
+
+        if request.method == 'POST':
+            form = EditCandidate(request.POST)
+
+            if form.is_valid():
+                firstname = form.cleaned_data['firstname']
+                lastname = form.cleaned_data['lastname']
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                candidate_group = form.cleaned_data['candidate_group']
+                if (password):
+                    user = User.objects.get(id = candidate_id)
+                    user.username = email
+                    user.last_name = lastname
+                    user.first_name = firstname
+                    user.email = email
+                    user.set_password(password)
+                    user.save()
+                else:
+                    user = User.objects.get(id = candidate_id)
+                    user.username = email
+                    user.last_name = lastname
+                    user.first_name = firstname
+                    user.email = email
+                    user.save()
+
+                Candidates.objects.filter(user_id = candidate_id).update(
+                    user_email = email,
+                    first_name = firstname,
+                    last_name = lastname,
+                    candidate_group = candidate_group
+                )
+                return HttpResponseRedirect('/dashboard/candidates/' + candidate_id + '/detail/')
+        else:
+            form = EditCandidate()
+        return render(request, 'dashboard/candidate_edit.html', {'candidate': candidate, 'candidate_groups': candidate_groups, 'form': form})
+
+
+    else:
+        return redirect('/login/')
 
 def db(request):
 

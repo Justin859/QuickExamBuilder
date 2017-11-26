@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^dashboard/candidates/$', hello.views.cadidates, name="candidates"),
     url(r'^dashboard/candidates/create/$', hello.views.create_candidate, name='create-candidate'),
     url(r'^dashboard/candidates/add-group/$', hello.views.add_cadidate_group, name='add-group'),
+    url(r'^dashboard/candidates/(?P<candidate_id>[0-9]+)/detail/$', hello.views.view_candidate, name='view-candidate'),
+    url(r'^dashboard/candidates/(?P<candidate_id>[0-9]+)/edit/$', hello.views.edit_candidate, name='edit-candidate'),
     url(r'^db', hello.views.db, name='db'),
     url(r'^admin/', include(admin.site.urls))
 ]
