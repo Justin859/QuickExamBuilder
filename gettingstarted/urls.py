@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^dashboard/candidates/add-group/$', hello.views.add_cadidate_group, name='add-group'),
     url(r'^dashboard/candidates/(?P<candidate_id>[0-9]+)/detail/$', hello.views.view_candidate, name='view-candidate'),
     url(r'^dashboard/candidates/(?P<candidate_id>[0-9]+)/edit/$', hello.views.edit_candidate, name='edit-candidate'),
+    url(r'^dashboard/question-bank/(?P<questions_id>[0-9]+)/detail/$', hello.views.view_question, name='view-question'),
+    url(r'^dashboard/question-bank/(?P<questions_id>[0-9]+)/edit/$', hello.views.edit_question, name='edit-question'),
     url(r'^db', hello.views.db, name='db'),
     url(r'^admin/', include(admin.site.urls))
 ]

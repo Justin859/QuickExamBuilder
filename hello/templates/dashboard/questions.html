@@ -34,8 +34,8 @@
                         <td>{{question.id}}</td>
                         <td>{{question.section}} {{candidate.last_name}}</td>
                         <td>{{question.question_text}}</td>
-                        <td><a href="#">view</a></td>
-                        <td><a href="#">edit</a></td>
+                        <td><a href="/dashboard/question-bank/{{question.id}}/detail/">view</a></td>
+                        <td><a href="/dashboard/question-bank/{{question.id}}/edit/">edit</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

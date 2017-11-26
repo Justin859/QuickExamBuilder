@@ -335,6 +335,85 @@ def edit_candidate(request, candidate_id):
             form = EditCandidate()
         return render(request, 'dashboard/candidate_edit.html', {'candidate': candidate, 'candidate_groups': candidate_groups, 'form': form})
 
+    else:
+        return redirect('/login/')
+
+@login_required(login_url='/login/', redirect_field_name='/login/')
+def view_question(request, questions_id):
+    # user filter when implimenting user to multiple groups 
+    if user_is_admin(request.user):
+        try:
+            form = QuestionForm()
+            question = Question.objects.get(user_id = request.user.id, id = questions_id)
+            # Change when more question types are added
+            question_by_type = MultipleChoice.objects.get(user_id = request.user.id, question_id = question.question_id)
+
+            return render(request, 'dashboard/question_view.html', {'question': question, 'question_by_type': question_by_type, 'form': form})
+        except:
+            # create better template view.
+            return HttpResponse('question not found in your question bank.')
+
+    else:
+        return redirect('/login/')
+
+@login_required(login_url='/login/', redirect_field_name='/login/')
+def edit_question(request, questions_id):
+    
+    if user_is_admin(request.user):
+
+        question = Question.objects.get(user_id = request.user.id, id = questions_id)
+        question_sections = QuestionSection.objects.filter(user_id = request.user.id)
+        current_section = QuestionSection.objects.get(user_id = request.user.id, section_name = question.section)
+        # Use a filter when more questions are available
+        question_by_type = MultipleChoice.objects.get(user_id = request.user.id, question_id = question.question_id)
+
+        if request.method == 'POST':
+            form = QuestionForm(request.POST)
+
+            if form.is_valid():
+                section = form.cleaned_data['section']
+                question_text = form.cleaned_data['question_text']
+                question_type = form.cleaned_data['question_type']
+                answer_field_1 = form.cleaned_data['answer_field_1']
+                answer_field_2 = form.cleaned_data['answer_field_2']
+                answer_field_3 = form.cleaned_data['answer_field_3']
+                answer_field_4 = form.cleaned_data['answer_field_4']
+                correct_answer = form.cleaned_data['correct_answer']
+                marks = form.cleaned_data['marks']
+
+                if (section != question.section) :
+                    current_section.question_count -= 1
+                    current_section.save()
+
+                    new_section = QuestionSection.objects.get(user_id = request.user.id, section_name = section)
+                    new_section.question_count += 1
+                    new_section.save()
+
+                    question = Question.objects.get(user_id = request.user.id, id = questions_id)
+                    question.section = section
+                    question.question_type = question_type
+                    question.question_text = question_text
+                    question.marks = marks
+                    question.save()
+                else:
+                    question = Question.objects.get(user_id = request.user.id, id = questions_id)
+                    question.section = section
+                    question.question_type = question_type
+                    question.question_text = question_text
+                    question.marks = marks
+                    question.save()
+
+                MultipleChoice.objects.filter(user_id = request.user.id, question_id = question.question_id).update(
+                    answer_field_1 = answer_field_1,
+                    answer_field_2 = answer_field_2,
+                    answer_field_3 = answer_field_3,
+                    answer_field_4 = answer_field_4,
+                    correct_answer = correct_answer
+                )
+                return HttpResponseRedirect('/dashboard/question-bank/' + str(question.id) + '/detail/')
+        else:
+            form = QuestionForm()
+        return render(request, 'dashboard/question_edit.html', {'question': question, 'question_by_type': question_by_type, 'question_sections': question_sections, 'form': form})
 
     else:
         return redirect('/login/')

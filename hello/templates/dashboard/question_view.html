@@ -1,0 +1,134 @@
+{% extends 'dashboard.html' %}
+{% load features %}
+{% block content %}
+
+<h3 class="display-4">Candidates</h3>
+<hr>
+
+<div class="row">
+    <div class="col-3">
+        <a href="/dashboard/question-bank/" class="btn btn-block btn-success">Question Bank</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/question-bank/create" class="btn btn-block btn-info">Create New Question</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/question-bank/add-section/" class="btn btn-block btn-warning">Add New Section</a>
+    </div>
+</div>
+
+<br />
+
+<div class="container" style="padding: 0;">
+    <div class="row">
+        <div class="col-12">
+            <h2>Question Details</h2>
+            <hr>
+        </div>
+    </div>
+    <h3 class="text-muted">Question</h3>
+    <br />
+    <blockquote class="blockquote">{{question.question_text | markdown_to_html}}</blockquote>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10 offset-md-1">
+                <form>
+                    <div class="form-group">
+                        <h3 class="text-muted">Answers</h3>
+                        <br />
+                        <div class="form-check">
+                            {% if form.answer_field_1.label == question_by_type.correct_answer %}
+                            <p><span class="badge badge-success">{{form.answer_field_1.label}}</span></p>
+                            <label class="form-check-label text-success" style="margin: 0 auto">
+                                    <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                    {{question_by_type.answer_field_1}}
+                            </label>
+                            {% else %}
+                            <p><span class="badge badge-warning">{{form.answer_field_1.label}}</span></p>
+                            <label class="form-check-label text-warning" style="margin: 0 auto">
+                                <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" disabled>
+                                {{question_by_type.answer_field_1}}
+                            </label>
+                            {% endif %}
+                        </div>
+                        <div class="form-check">
+                            {% if form.answer_field_2.label == question_by_type.correct_answer %}
+                            <p><span class="badge badge-success">{{form.answer_field_2.label}}</span></p>
+                            <label class="form-check-label text-success" style="margin: 0 auto">
+                                <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked>
+                                {{question_by_type.answer_field_2}}
+                            </label>
+                            {% else %}
+                            <p><span class="badge badge-warning">{{form.answer_field_2.label}}</span></p>
+                            <label class="form-check-label text-warning" style="margin: 0 auto">
+                                <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" disabled>
+                                {{question_by_type.answer_field_2}}
+                            </label>
+                            {% endif %}
+                        </div>
+                        <div class="form-check">
+                            {% if form.answer_field_3.label == question_by_type.correct_answer %}
+                            <p><span class="badge badge-success">{{form.answer_field_3.label}}</span></p>
+                            <label class="form-check-label text-success" style="margin: 0 auto">
+                                <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" checked>
+                                {{question_by_type.answer_field_3}}
+                            </label>
+                            {% else %}
+                            <p><span class="badge badge-warning">{{form.answer_field_3.label}}</span></p>
+                            <label class="form-check-label text-warning" style="margin: 0 auto">
+                                <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" disabled>
+                                {{question_by_type.answer_field_3}}
+                            </label>
+                            {% endif %}
+                        </div>
+                        <div class="form-check">
+                                {% if form.answer_field_4.label == question_by_type.correct_answer %}
+                                <p><span class="badge badge-success">{{form.answer_field_4.label}}</span></p>
+                                <label class="form-check-label text-success" style="margin: 0 auto">
+                                    <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios4" value="option4" checked>
+                                    {{question_by_type.answer_field_4}}
+                                </label>
+                                {% else %}
+                                <p><span class="badge badge-warning">{{form.answer_field_3.label}}</span></p>
+                                <label class="form-check-label text-warning" style="margin: 0 auto">
+                                    <input class="form-check-input" style="margin-left: 15px" type="radio" name="exampleRadios" id="exampleRadios4" value="option4" disabled>
+                                    {{question_by_type.answer_field_4}}
+                                </label>
+                                {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <h3 class="text-muted">Options</h3>
+        <br />
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <th>Question Type</th>
+                        <th>Section</th>
+                        <th>Marks</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{question.question_type}}</td>
+                            <td>{{question.section}}</td>
+                            <td>{{question.marks}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 offset-md-8">
+                <a href="/dashboard/question-bank/{{question.id}}/edit/" type="button" class="btn btn-secondary float-right">Edit Question</a>
+            </div>
+        </div>
+    </div>
+
+    <br>
+</div>
+
+{% endblock %}
