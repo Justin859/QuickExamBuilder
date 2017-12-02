@@ -55,7 +55,11 @@ class ExamCandidateGroups(models.Model):
     group_section = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.exam_id
+        return self.exam_id + " " + self.group_section
+    
+    class Meta:
+        verbose_name = 'Exam Candidate Group'
+        verbose_name_plural = 'Exam Candidate Groups'
 
 class ExamQuestionSections(models.Model):
     user_id = models.CharField(max_length=255)
@@ -64,7 +68,11 @@ class ExamQuestionSections(models.Model):
     number_of_questions = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
-        return self.exam_id
+        return self.exam_id + " " + self.question_section
+    
+    class Meta:
+        verbose_name = 'Exam Question Section'
+        verbose_name_plural = 'Exam Question Sections'
 
 class Candidates(models.Model):
     admin_id = models.CharField(max_length=255)

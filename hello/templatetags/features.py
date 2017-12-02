@@ -19,3 +19,11 @@ def markdown_to_html(markdown_text):
     '''Converts markdown text to HTML '''   
     html_body = markdown2.markdown(markdown_text)
     return mark_safe(html_body)
+
+@register.filter(name='convert_seconds')
+def convert_seconds(seconds):
+    seconds = int(seconds)
+    days, seconds = divmod(seconds, 24 * 60 * 60)
+    hours, seconds = divmod(seconds, 60 * 60)
+    minutes, seconds = divmod(seconds, 60)
+    return "%dd %dh %dm %ds" % (days, hours, minutes, seconds)

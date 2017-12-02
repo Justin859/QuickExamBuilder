@@ -1,0 +1,103 @@
+{% extends 'dashboard.html' %}
+{% load features %}
+{% block content %}
+
+<h3 class="display-4">Candidates</h3>
+<hr>
+
+<div class="row">
+    <div class="col-3">
+        <a href="/dashboard/candidates/" class="btn btn-block btn-success">Candidate List</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/candidates/create" class="btn btn-block btn-info">Create New Candidate</a>
+    </div>
+    <div class="col-3">
+        <a href="/dashboard/candidates/add-group/" class="btn btn-block btn-warning">Add New Group</a>
+    </div>    
+</div>
+
+<br />
+
+<div class="container" style="padding: 0;">
+    <div class="row">
+        <div class="col-12">
+            <h2>Exam Details - <small class="text-muted">{{exam.exam_name}}</small></h2>
+            <hr>
+        </div>
+    </div>
+    <h3 class="text-muted">Exam Info</h3>
+    <table class="hidden-sm-down table table-hover">
+        <tbody>
+            <tr>
+                <th scope="row" style="border-top: 0px;">Duration : </th>
+                <td style="border-top: 0px;">{{exam.duration | convert_seconds}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Availability : </th>
+                {% if exam.availability == 'AlwaysAvailable' %}
+                <td>Always Available</td>
+                {% else %}
+                <td>Available On Specific Time</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th scope="row">Question Picking : </th>
+                {% if exam.question_picking == 'AutoPickDiff' %}
+                <td>Auto Pick Different Questions For Each Candidate</td>
+                {% else %}
+                <td>Auto Pick Same Questions For Each Candidate</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th scope="row">Candidates : </th>
+                <td>
+                {% for candidate in candidates %}
+                 {{candidate.group_section}};
+                {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Question Sections</th>
+                <td>
+                    {% for section in question_sections %}
+                    {{section.question_section}} ({{section.number_of_questions}});
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Start Date : </th>
+                <td>
+                    {{exam.start_date}}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">End Date : </th>
+                <td>
+                    {{exam.end_date}}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Start Time : </th>
+                <td>
+                    {{exam.start_time}}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">End Time : </th>
+                <td>
+                    {{exam.end_time}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <div class="row">
+        <div class="col-4 offset-md-8">
+            <a href="/dashboard/exams/{{exam.id}}/edit" type="button" class="btn btn-secondary float-right">Edit Details</a>
+        </div>
+    </div>
+    <hr />
+</div>
+
+{% endblock %}

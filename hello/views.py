@@ -418,6 +418,97 @@ def edit_question(request, questions_id):
     else:
         return redirect('/login/')
 
+@login_required(login_url='/login/', redirect_field_name='/login/')
+def view_exam(request, exam_id):
+    # user filter when implimenting user to multiple groups 
+    if user_is_admin(request.user):
+
+        exam = Exam.objects.get(user_id = request.user.id, id = exam_id)
+        candidates = ExamCandidateGroups.objects.filter(exam_id = exam_id, user_id = request.user.id)
+        question_sections = ExamQuestionSections.objects.filter(exam_id = exam_id, user_id = request.user.id)
+        # Change when more question types are added
+
+        return render(request, 'dashboard/exam_view.html', {'exam': exam, 'candidates': candidates, 'question_sections': question_sections})
+
+    else:
+        return redirect('/login/')
+
+@login_required(login_url='/login/', redirect_field_name='/login/')
+def edit_exam(request, exam_id):
+    if user_is_admin(request.user):
+
+        exam_object = Exam.objects.get(id = exam_id, user_id = request.user.id)
+        candidate_groups = CandidateGroup.objects.filter(user_id = request.user.id)
+        question_sections = QuestionSection.objects.filter(user_id = request.user.id)
+        exam_candidate_groups = ExamCandidateGroups.objects.filter(exam_id = exam_id, user_id = request.user.id)
+        exam_question_sections = ExamQuestionSections.objects.filter(user_id = request.user.id, exam_id = exam_id)  
+        
+        selected_candidates = []
+
+        for item in exam_candidate_groups:
+            selected_candidates.append(item.group_section)
+
+        if request.method == 'POST':
+            form = ExamForm(request.POST)
+
+            if form.is_valid():
+
+                exam_name = form.cleaned_data['exam_name']
+                duration = form.cleaned_data['duration']
+                question_picking = form.cleaned_data['question_picking']
+                availability = form.cleaned_data['availability']
+                start_date = form.cleaned_data['start_date']
+                end_date = form.cleaned_data['end_date']
+                start_time = form.cleaned_data['start_time']
+                end_time = form.cleaned_data['end_time']
+                candidates = request.POST.getlist('candidates')
+                number_of_questions = request.POST.getlist('number_of_questions')
+                from_section = request.POST.getlist('from_section')
+
+                exam_candidate_groups.delete()
+                for item in candidates:
+                    ExamCandidateGroups.objects.create(
+                    user_id = request.user.id,
+                    exam_id = exam_id,
+                    group_section = item
+                )
+
+                l = 0
+                exam_question_sections.delete()
+                for question in from_section:
+                    ExamQuestionSections.objects.create(
+                        user_id = request.user.id,
+                        exam_id = exam_id,
+                        question_section = from_section[l],
+                        number_of_questions = number_of_questions[l])
+                    l += 1
+
+                exam_object.exam_name = exam_name
+                exam_object.duration = duration
+                exam_object.availability = availability
+                exam_object.question_picking = question_picking
+                exam_object.start_date = start_date
+                exam_object.end_date = end_date
+                exam_object.start_time = start_time
+                exam_object.end_time = end_time
+                exam_object.save()
+
+                return HttpResponseRedirect('/dashboard/exams/' + exam_id + '/detail/')
+
+        else:
+            form = ExamForm()
+
+        return render(request, 'dashboard/exam_edit.html', {
+            'form': form,
+            'exam_object': exam_object,
+            'candidate_groups': candidate_groups,
+            'selected_candidates': selected_candidates,
+            'exam_question_sections': exam_question_sections,
+            'question_sections': question_sections})
+    else:
+        return redirect('/login/')
+
+
 def db(request):
 
     greeting = Greeting()

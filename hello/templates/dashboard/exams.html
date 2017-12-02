@@ -37,8 +37,8 @@
                         <td>{{exam.start_date}}</td>
                         <td>{{exam.end_date}}</td>
                         <td>{{exam.duration | duration_filter}}</td>
-                        <td><a href="#">view</a></td>
-                        <td><a href="#">edit</a></td>
+                        <td><a href="/dashboard/exams/{{exam.id}}/detail/">view</a></td>
+                        <td><a href="/dashboard/exams/{{exam.id}}/edit/">edit</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

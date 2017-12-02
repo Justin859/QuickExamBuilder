@@ -1,9 +1,8 @@
 from django import forms
 
 QUESTION_TYPES = (('Select', 'Select'), ('MultipleChoice', 'Multiple Choice'))
-SECTIONS = (('Select', 'Select'), ('Default', 'Default'))
 CORRECT = (('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'))
-QUESTION_PICKING = (('Select', 'Select'), ('AutoPick', 'Auto Pick (different questions for all candidates)'), ('AutoPickDiff', 'Auto Pick (same questions for all candidates)'))
+QUESTION_PICKING = (('AutoPickDiff', 'Auto Pick (different questions for all candidates)'), ('AutoPickSame', 'Auto Pick (same questions for all candidates)'))
 AVAILABILITY = (('AlwaysAvailable', 'Always available'), ('AvailableOnSpecificTime', 'Available on specific time'))
 
 class QuestionForm(forms.Form):

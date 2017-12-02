@@ -18,14 +18,14 @@
     </div>
 </div>
 
-<form action="" name="EditForm" method="POST" id="create-new-exam">
+<form action="" method="POST" name="EditForm" id="create-new-exam">
     {% csrf_token %}
     <h3>1. Enter exam information</h3>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
                 <label id="id_{{form.exam_name.name}}">{{form.exam_name.label}}</label>
-                <input name="{{form.exam_name.name}}" maxlength="255" id="id_{{form.exam_name.name}}" class="form-control" type="text">
+                <input name="{{form.exam_name.name}}" maxlength="255" id="id_{{form.exam_name.name}}" value="{{exam_object.exam_name}}" class="form-control" type="text">
             </div>
         </div>
     </div>
@@ -33,15 +33,23 @@
         <div class="col-4">
             <div class="form-group">
                 <label id="id_{{form.duration.name}}">{{form.duration.label}}</label>
-                <input name="{{form.duration.name}}" maxlength="255" id="duration-picker" class="form-control" type="text">
+                <input name="{{form.duration.name}}" maxlength="255" id="duration-picker" value="{{exam_object.duration}}" class="form-control" type="text">
             </div>
         </div>
         <div class="col-4">
             <div class="form-group">
                 <label>{{form.availability.label}}</label>
                 <select name="{{form.availability.name}}" maxlength="255" id="id_{{form.availability.name}}" class="form-control" type="text">
+                    {% if exam_object.availability == 'AlwaysAvailable' %}
+                    <option value="AlwaysAvailable" selected="selected">Always available</option>
+                    {% else %}
                     <option value="AlwaysAvailable">Always available</option>
+                    {% endif %}
+                    {% if exam_object.availability == 'AvailableOnSpecificTime' %}
+                    <option value="AvailableOnSpecificTime" selected="selected">Available on specific time</option>
+                    {% else %}
                     <option value="AvailableOnSpecificTime">Available on specific time</option>
+                    {% endif %}
                 </select>
             </div>
         </div>
@@ -49,8 +57,16 @@
             <div class="form-group">
                 <label id="id_{{form.question_picking.name}}">{{form.question_picking.label}}</label>
                 <select name="{{form.question_picking.name}}" id="id_{{form.question_picking.name}}" class="form-control">
+                    {% if exam_object.question_picking == 'AutoPickDiff' %}
+                    <option value="AutoPickDiff" selected="selected">Auto Pick (different questions for all candidates)</option>
+                    {% else %}
                     <option value="AutoPickDiff">Auto Pick (different questions for all candidates)</option>
+                    {% endif %}
+                    {% if exam_object.question_picking == 'AutoPickSame' %}
+                    <option value="AutoPickSame" selected="selected" >Auto Pick (same questions for all candidates)</option>
+                    {% else %}
                     <option value="AutoPickSame">Auto Pick (same questions for all candidates)</option>
+                    {% endif %}
                 </select>
             </div>
         </div>
@@ -59,13 +75,13 @@
         <div class="col-4">
             <div class="form-group">
                 <label id="id_{{form.start_date.name}}">{{form.start_date.label}}</label>
-                <input type="date" id="id_{{form.start_date.name}}" name="{{form.start_date.name}}" class="form-control">
+                <input type="date" id="id_{{form.start_date.name}}" value="{{exam_object.start_date}}" name="{{form.start_date.name}}" class="form-control">
             </div>
         </div>
         <div class="col-4">
             <div class="form-group">
                 <label id="id_{{form.start_time.name}}">{{form.start_time.label}}</label>
-                <input type="time" id="id_{{form.start_time.name}}" name="{{form.start_time.name}}" class="form-control" value="12:30">
+                <input type="time" id="id_{{form.start_time.name}}" value="{{exam_object.start_time}}" name="{{form.start_time.name}}" class="form-control" value="12:30">
             </div>
         </div>
     </div>
@@ -73,13 +89,13 @@
             <div class="col-4">
                 <div class="form-group">
                     <label id="id_{{form.end_date.name}}">{{form.end_date.name}}</label>
-                    <input type="date" id="id_{{form.end_date.name}}" name="{{form.end_date.name}}" class="form-control">
+                    <input type="date" id="id_{{form.end_date.name}}" value="{{exam_object.end_date}}" name="{{form.end_date.name}}" class="form-control">
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label id="id_{{form.end_time.name}}">{{form.end_time.name}}</label>
-                    <input type="time" class="form-control" name="{{form.end_time.name}}" value="12:30">
+                    <input type="time" class="form-control" value="{{exam_object.end_time}}" name="{{form.end_time.name}}" value="12:30">
                 </div>
             </div>
         </div>
@@ -90,13 +106,45 @@
                 <label for="id_{{form.candidates.name}}">{{form.candidates.label}}</label>
                 <select name="{{form.candidates.name}}" id="candidate-select" class="form-control" multiple>
                     {% for group in candidate_groups %}
+                    {% if group.group_name in selected_candidates %}
+                    <option value="{{group.group_name}}" selected="selected">{{group.group_name}} ({{group.candidate_count}})</option>
+                    {% else %}
                     <option value="{{group.group_name}}">{{group.group_name}} ({{group.candidate_count}})</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>
         </div>
     </div>
     <h3>3. Specify Questions</h3>
+    {% for question in exam_question_sections %}
+    <div class="row old-question-{{forloop.counter}}">
+        <div class="col-5">
+            <div class="form-group">
+                <label for="id_{{form.from_section.name}}">{{form.from_section.label}}</label>
+                <select name="{{form.from_section.name}}" class="form-control" id="id_{{form.from_section.name}}">
+                    <option selected disabled value="Select"> -- select a section -- </option>
+                    {% for section in question_sections %}
+                    {% if section.section_name == question.question_section %}
+                    <option value="{{section.section_name}}" selected="selected">{{section.section_name}} ({{section.question_count}})</option>
+                    {% else %}
+                    <option value="{{section.section_name}}">{{section.section_name}} ({{section.question_count}})</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="form-group">
+                <label for="id_{{form.number_of_questions.name}}">{{form.number_of_questions.label}}</label>
+                <input name="{{form.number_of_questions.name}}" id="id_{{form.number_of_questions.name}}" value="{{question.number_of_questions}}" class="form-control" max="327" min="1" type="number">
+            </div>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+            <button type="button" class="btn btn-danger" id="old-question-{{forloop.counter}}" onclick="deleteQuestion('old-question-{{forloop.counter}}')">Remove Question</button>                        
+        </div>
+    </div>
+    {% endfor %}
     <div class="row added-questions"></div>
     <div class="row question-multiple">
         <div class="col-5">
