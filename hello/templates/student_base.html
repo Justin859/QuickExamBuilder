@@ -1,0 +1,55 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Dashboard</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'vendor/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/custom/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/bower_components/semantic/dist/semantic.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/bower_components/jquery-duration-picker/dist/jquery-duration-picker.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/bower_components/multiselect/css/multi-select.css' %}">
+</head>
+<body>
+        <nav class="navbar navbar-inverse bg-warning">
+            <!-- Navbar content -->
+            <a class="navbar-brand" href="#">Candidate - {{request.user.first_name}}</a>
+        </nav>
+        <nav class="navbar navbar-inverse bg-success">
+            <!-- Navbar content -->
+            <a class="navbar-brand ml-auto" href="#">User - {{request.user.get_full_name}}</a>
+        </nav>
+    <div class="container-fluid">
+        <br />
+        <div class="row">
+            <div class="col-3">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="/student-dashboard/home/">Home</a></li>
+                    <li class="list-group-item"><a href="/student-dashboard/upcoming-exams/">Upcoming Exams</a></li>
+                    <li class="list-group-item"><a href="/student-dashboard/exam-history/">Exam History</a></li>
+                    <li class="list-group-item"><a href="/student-dashboard/notifications/">Notifications</a></li>
+                    <li class="list-group-item"><a href="/accounts/profile/">Profile</a></li>
+                    <li class="list-group-item"><a href="/logout/">Logout</a></li>
+                    
+                  </ul>
+            </div>
+            <div class="col-8" style="background-color: #ffffff;">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{% static 'vendor/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bower_components/tether/dist/js/tether.min.js' %}"></script>
+<script src="{% static 'vendor/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'vendor/custom/js/student_form.js' %}"></script>
+</body>
+</html>

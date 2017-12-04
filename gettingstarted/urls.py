@@ -5,6 +5,7 @@ admin.autodiscover()
 from django.contrib.auth import views as auth_views
 
 import hello.views
+import hello.student_views
 
 
 # Examples:
@@ -30,6 +31,9 @@ urlpatterns = [
     url(r'^dashboard/candidates/(?P<candidate_id>[0-9]+)/edit/$', hello.views.edit_candidate, name='edit-candidate'),
     url(r'^dashboard/question-bank/(?P<questions_id>[0-9]+)/detail/$', hello.views.view_question, name='view-question'),
     url(r'^dashboard/question-bank/(?P<questions_id>[0-9]+)/edit/$', hello.views.edit_question, name='edit-question'),
+    url(r'student-dashboard/$', hello.student_views.dashboard, name='student-dashboard'),
+    url(r'student-dashboard/login/$', hello.student_views.student_login, name='student-login'),
+    url(r'student-dashboard/upcoming-exams/$', hello.student_views.upcoming_exams, name='upcoming-exams'),
     url(r'^db', hello.views.db, name='db'),
     url(r'^admin/', include(admin.site.urls))
 ]
